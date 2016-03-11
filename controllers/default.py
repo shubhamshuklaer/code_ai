@@ -8,6 +8,15 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 #########################################################################
 
+def code():
+    prob_code=request.vars['prob_code']
+    from bs4 import BeautifulSoup as bs
+    import urllib
+    r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
+    soup=bs(r,"lxml")
+    problem_body=soup.find(id="problem-body")
+    return dict(problem_body=XML(problem_body),prob_code=prob_code)
+
 def index():
     """
     example action using the internationalization operator T and flash
@@ -16,7 +25,7 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
-    response.flash = T("Hello World")
+    response.flash = T("Hello World Shubham")
     return dict(message=T('Welcome to web2py!'))
 
 

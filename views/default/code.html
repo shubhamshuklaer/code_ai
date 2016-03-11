@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+<div class="row">
+{{=problem_body}}
+</div>
+<div class="row">
+<div id="editor"></div>
+</div>
+<script src="{{=URL('static','ace/ace.js')}}" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
