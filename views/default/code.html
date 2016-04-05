@@ -3,11 +3,19 @@
 {{=problem_body}}
 </div>
 <div class="row">
+<select id="mode" onchange="change_mode(this.value)">
+    {{include 'default/modes.html'}}
+</select>
+</div>
+<div class="row">
 <div id="editor"></div>
 </div>
 <script src="{{=URL('static','ace/ace.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
+    editor.getSession().setMode("ace/mode/c_cpp");
+    function change_mode(val){
+        editor.getSession().setMode("ace/mode/"+val);
+    }
 </script>

@@ -15,6 +15,8 @@ def code():
     r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
     soup=bs(r,"lxml")
     problem_body=soup.find(id="problem-body")
+    import os
+    import re
     return dict(problem_body=XML(problem_body),prob_code=prob_code)
 
 def index():
