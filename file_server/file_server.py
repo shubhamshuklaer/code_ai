@@ -10,6 +10,7 @@ import json
 from http.server import BaseHTTPRequestHandler,HTTPServer
 import socketserver
 from urllib.parse import urlparse
+import mimetypes
 
 # http://stackoverflow.com/questions/3503879/assign-output-of-os-system-to-a-variable-and-prevent-it-from-being-displayed-on
 serv_path=os.path.join(os.popen("spoj get_root").read().strip(),"spoj")
@@ -52,9 +53,16 @@ class request_handler(BaseHTTPRequestHandler):
             with open(file_path) as f:
                 data_to_send=f.read()
         elif os.path.isdir(file_path):
-            dir_list=os.listdir(file_path)
-            for i in range(len(dir_list)):
-                dir_list[i]="/"+os.path.basename(file_path)+"/"+dir_list[i]
+            dir_list_tmp=os.listdir(file_path)
+            dir_list=[]
+
+            for i in range(len(dir_list_tmp)):
+                # http://stackoverflow.com/questions/2472221/how-to-check-if-a-file-is-a-textfile/2472243#2472243
+                # For cpp file the result is ('text/x-c', None)
+                # For binary files it was (None,None)
+                mime_type=mimetypes.guess_type(os.path.join(file_path,dir_list_tmp[i]))[0]
+                if mime_type != None and 'text' in mime_type:
+                    dir_list.append("/"+os.path.basename(file_path)+"/"+dir_list_tmp[i])
             data_to_send=dir_list
         else:
             data_to_send=""
