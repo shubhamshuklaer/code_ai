@@ -2,6 +2,7 @@
 <div class="row">
 {{=problem_body}}
 </div>
+<div class="row"><select id="file_paths"></select>
 <div class="row">
 <select id="mode" onchange="change_mode(this.value)">
     {{include 'default/modes.html'}}
@@ -18,4 +19,24 @@
     function change_mode(val){
         editor.getSession().setMode("ace/mode/"+val);
     }
+    // http://stackoverflow.com/a/901144/2258503
+    function get_par(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    // http://www.w3schools.com/jquery/ajax_ajax.asp
+    $(document).ready(function(){
+        // jsonp http://stackoverflow.com/a/21948020/2258503
+        $.ajax({url: "http://localhost:8080/"+get_par('prob_code'), type: "GET",contentType: "application/json", dataType: "jsonp", success: function(result){
+//            var paths=$.parseJSON(result);
+            $.each( result, function( i, val ) {
+                $("#file_paths").append('<option value='+val+'>'+val+'</option>');
+            });
+        }});
+    });
 </script>

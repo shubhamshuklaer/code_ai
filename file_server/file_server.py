@@ -9,6 +9,7 @@ import json
 # The BaseHTTPServer module has been merged into http.server in Python 3.
 from http.server import BaseHTTPRequestHandler,HTTPServer
 import socketserver
+from urllib.parse import urlparse
 
 # http://stackoverflow.com/questions/3503879/assign-output-of-os-system-to-a-variable-and-prevent-it-from-being-displayed-on
 serv_path=os.path.join(os.popen("spoj get_root").read().strip(),"spoj")
@@ -40,9 +41,13 @@ if serv_path == None:
 class request_handler(BaseHTTPRequestHandler):
     def do_GET(self):
         global serv_path
+        # http://stackoverflow.com/questions/8928730/processing-http-get-input-parameter-on-server-side-in-python
+        query = urlparse(self.path).query
+        query_components = dict(qc.split("=") for qc in query.split("&"))
         # need to remove /
-        file_path=os.path.join(serv_path,self.path[1:])
+        file_path=os.path.join(serv_path,self.path[1:self.path.find("?")])
         res_code=200
+        print(file_path)
         if os.path.isfile(file_path):
             with open(file_path) as f:
                 data_to_send=f.read()
@@ -50,15 +55,16 @@ class request_handler(BaseHTTPRequestHandler):
             dir_list=os.listdir(file_path)
             for i in range(len(dir_list)):
                 dir_list[i]="/"+os.path.basename(file_path)+"/"+dir_list[i]
-            data_to_send=json.dumps(dir_list)
+            data_to_send=dir_list
         else:
             data_to_send=""
             res_code=404
 
         self.send_response(res_code)
-        self.send_header('Content-type','text')
+        self.send_header('Content-type','application/json')
         self.end_headers()
-        self.wfile.write(data_to_send.encode())
+        # https://siongui.github.io/2015/02/20/jsonp-anonymous-callback-function/
+        self.wfile.write(("("+query_components["callback"]+")("+json.dumps(data_to_send)+")").encode())
 
     def do_POST(self):
         file_path=os.path.join(serv_path,self.path[1:])

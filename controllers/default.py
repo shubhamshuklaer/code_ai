@@ -12,9 +12,11 @@ def code():
     prob_code=request.vars['prob_code']
     from bs4 import BeautifulSoup as bs
     import urllib
-    r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
-    soup=bs(r,"lxml")
-    problem_body=soup.find(id="problem-body")
+    # Enable later
+    #  r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
+    #  soup=bs(r,"lxml")
+    #  problem_body=soup.find(id="problem-body")
+    problem_body="Hello"
     import os
     import re
     return dict(problem_body=XML(problem_body),prob_code=prob_code)
