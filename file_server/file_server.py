@@ -14,29 +14,31 @@ import mimetypes
 
 # http://stackoverflow.com/questions/3503879/assign-output-of-os-system-to-a-variable-and-prevent-it-from-being-displayed-on
 serv_path=os.path.join(os.popen("spoj get_root").read().strip(),"spoj")
-port=8000
+port=8008
 
-def usage():
-    print("./file_server.py [-p port] [-d dir_to_serv]")
-
-try:
-    opts,args=getopt.getopt(sys.argv[1:],"hp:d:")
-except getopt.GetoptError:
-    usage()
-    exit(2)
-
-for opt,arg in opts:
-    if opt=="-h":
-        usage()
-        exit(0)
-    elif opt=="-p":
-        port=int(arg)
-    elif opt=="-d":
-        serv_path=os.path.expanduser(arg)
-
-if serv_path == None:
-    usage()
-    exit(2)
+# No need to provide flexibility cause port is hardcoded in the
+# static/js/custom.js script
+# def usage():
+#     print("./file_server.py [-p port] [-d dir_to_serv]")
+#
+# try:
+#     opts,args=getopt.getopt(sys.argv[1:],"hp:d:")
+# except getopt.GetoptError:
+#     usage()
+#     exit(2)
+#
+# for opt,arg in opts:
+#     if opt=="-h":
+#         usage()
+#         exit(0)
+#     elif opt=="-p":
+#         port=int(arg)
+#     elif opt=="-d":
+#         serv_path=os.path.expanduser(arg)
+#
+# if serv_path == None:
+#     usage()
+#     exit(2)
 
 
 class request_handler(BaseHTTPRequestHandler):

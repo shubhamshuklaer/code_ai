@@ -19,7 +19,7 @@ function get_par(name, url) {
 
 function set_text(val){
     // jsonp http://stackoverflow.com/a/21948020/2258503
-    $.ajax({url: "http://localhost:8080"+val, type: "GET",contentType: "application/json", dataType: "jsonp", success: function(result){
+    $.ajax({url: "http://localhost:8008"+val, type: "GET",contentType: "application/json", dataType: "jsonp", success: function(result){
         // editor.setSession(ace.createEditSession();
         // http://stackoverflow.com/questions/18614169/set-value-for-ace-editor-without-selecting-the-whole-editor
         editor.setValue(result,1);
@@ -29,7 +29,7 @@ function set_text(val){
 
 function save_text(file,text,async_req){
         // You cannot use jsonp with POST
-    $.ajax({url: "http://localhost:8080"+file, type: "POST", data: text, async: async_req, success: function(result){
+    $.ajax({url: "http://localhost:8008"+file, type: "POST", data: text, async: async_req, success: function(result){
         alert(result);
     }});
 }
@@ -54,7 +54,7 @@ function change_text(val){
 // http://www.w3schools.com/jquery/ajax_ajax.asp
 $(document).ready(function(){
     // jsonp http://stackoverflow.com/a/21948020/2258503
-    $.ajax({url: "http://localhost:8080/"+get_par('prob_code'), type: "GET",contentType: "application/json", dataType: "jsonp", success: function(result){
+    $.ajax({url: "http://localhost:8008/"+get_par('prob_code'), type: "GET",contentType: "application/json", dataType: "jsonp", success: function(result){
         $.each( result, function( i, val ) {
             $("#file_paths").append('<option value='+val+'>'+val+'</option>');
             undo_manager_dict[val]=new ace.UndoManager();
