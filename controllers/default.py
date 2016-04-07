@@ -9,22 +9,28 @@
 #########################################################################
 
 def code():
+    import os
+    import re
+    from bs4 import BeautifulSoup as bs
+    import urllib
+
     prob_code=request.vars['prob_code']
+    if os.popen("spoj is_configured").read().strip() == "0":
+        redirect(URL('spoj_not_configured'))
     if "no_load_prob" in request.vars:
         load_prob=False
     else:
         load_prob=True
-    from bs4 import BeautifulSoup as bs
-    import urllib
     if load_prob:
         r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
         soup=bs(r,"lxml")
         problem_body=soup.find(id="problem-body")
     else:
         problem_body="Remove no_load_prob to load problem"
-    import os
-    import re
     return dict(problem_body=XML(problem_body),prob_code=prob_code)
+
+def spoj_not_configured():
+    return dict(error_text="spoj not configured")
 
 def add_input():
     prob_code=request.vars['prob_code']
