@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+<div class="container">
+    <div class="form-group">
+        <label class="control-label col-md-2 remove_padding">Language Select</label>
+        <div class="col-md-10">
+            <select id="language_select" class="form-control" onchange="change_lang_info(this.value)">
+                {{for key in lang_dict:}}
+                    {{if key == default_lang:}}
+                        <option value="{{=key}}" selected="true">{{=lang_dict[key]}}</option>
+                    {{else:}}
+                        <option value="{{=key}}">{{=lang_dict[key]}}</option>
+                    {{pass}}
+                {{pass}}
+            </select>
+        </div>
+
+        <label class="control-label col-md-2 remove_padding">Compile command</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="cmpile_cmd" value="{{=default_cmpile_cmd}}">
+        </div>
+
+        <label class="control-label col-md-2 remove_padding">Run command</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="run_cmd" value="{{=default_run_cmd}}">
+        </div>
+
+        <label class="control-label col-md-2 remove_padding">Extension(Without dot)</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="extension" value="{{=default_extension}}">
+        </div>
+
+        <button type="submit" class="btn btn-default" type="button" onclick="start_problem()">Start Problem</button>
+    </div>
+</div>
+
+<script>
+
+// http://stackoverflow.com/a/901144/2258503
+function get_par(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function change_lang_info(lang){
+    $.getJSON("{{=URL('get_lang_info')}}?language="+lang,function(data){
+        $("#cmpile_cmd").val(data["cmpile_cmd"]);
+        $("#run_cmd").val(data["run_cmd"]);
+        $("#extension").val(data["extension"]);
+    });
+}
+
+function start_problem(){
+    // http://www.w3schools.com/jsref/jsref_encodeuricomponent.asp
+    var language=encodeURIComponent($("#language_select").val());
+    var cmpile_cmd=encodeURIComponent($("#cmpile_cmd").val());
+    var run_cmd=encodeURIComponent($("#run_cmd").val());
+    var extension=encodeURIComponent($("#extension").val());
+    no_load_prob="";
+    if(window.location.href.indexOf("no_load_prob") > -1){
+        no_load_prob="&no_load_prob"
+    }
+    window.location.href="{{=URL('start_problem')}}?prob_code="+get_par("prob_code")+"&language="+language+"&cmpile_cmd="+cmpile_cmd+"&run_cmd="+run_cmd+"&extension="+extension+no_load_prob;
+}
+</script>

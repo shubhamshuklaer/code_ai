@@ -17,6 +17,9 @@ def code():
     prob_code=request.vars['prob_code']
     if os.popen("spoj is_configured").read().strip() == "0":
         redirect(URL('spoj_not_configured'))
+    if os.popen("spoj is_problem_started -p "+prob_code).read().strip() == "0":
+        redirect(URL('start_problem',vars=request.vars))
+
     if "no_load_prob" in request.vars:
         load_prob=False
     else:
@@ -29,8 +32,56 @@ def code():
         problem_body="Remove no_load_prob to load problem"
     return dict(problem_body=XML(problem_body),prob_code=prob_code)
 
+def get_lang_info_helper(language):
+    import os
+    cmds=os.popen('spoj get_lang_info -l '+language).read().strip().splitlines()
+    cmpile_cmd=cmds[0].split(":")[1].strip()
+    run_cmd=cmds[1].split(":")[1].strip()
+    extension=cmds[2].split(":")[1].strip()
+    if cmpile_cmd == "None":
+        cmpile_cmd=""
+    if run_cmd == "None":
+        run_cmd=""
+    if extension == "None":
+        extension=""
+    return cmpile_cmd,run_cmd,extension
+
+def start_problem():
+    import os
+    prob_code=request.vars['prob_code']
+    if 'language' in request.vars:
+        language=request.vars["language"]
+        cmpile_cmd=request.vars["cmpile_cmd"]
+        run_cmd=request.vars["run_cmd"]
+        extension=request.vars["extension"]
+        os.system("spoj set_lang_info -l '"+language+"' --cmpile_cmd '"+cmpile_cmd+"' --run_cmd '"+run_cmd+"' --extension '"+extension+"'")
+        os.system("spoj start -n "+prob_code+" -l "+language)
+        del request.vars['language']
+        del request.vars['cmpile_cmd']
+        del request.vars['run_cmd']
+        del request.vars["extension"]
+        redirect(URL('code',vars=request.vars))
+    else:
+        ret_val=os.popen('spoj language').read().strip()
+        lang_list=[s.strip() for s in ret_val.splitlines()]
+        lang_list.pop(0)
+        lang_dict=dict()
+        for lang in lang_list:
+            lang_dict[lang.split(":")[1].strip()]=lang.split(":")[0].strip()
+        default_lang=os.popen('spoj get_language').read().strip()
+        default_cmpile_cmd,default_run_cmd,default_extension=get_lang_info_helper(default_lang)
+        return dict(lang_dict=lang_dict,default_lang=default_lang,default_cmpile_cmd=default_cmpile_cmd,default_run_cmd=default_run_cmd,default_extension=default_extension)
+
+def get_lang_info():
+    language=request.vars["language"]
+    cmpile_cmd,run_cmd,extension=get_lang_info_helper(language)
+    import json
+    # if we send a dict it actually send some default html with the dict as paramaters
+    return json.dumps(dict(cmpile_cmd=cmpile_cmd,run_cmd=run_cmd,extension=extension))
+
+
 def spoj_not_configured():
-    return dict(error_text="spoj not configured")
+    return dict(error_text="spoj not configured, run spoj config --config_all")
 
 def add_input():
     prob_code=request.vars['prob_code']
