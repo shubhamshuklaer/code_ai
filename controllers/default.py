@@ -21,6 +21,12 @@ def code():
     import re
     return dict(problem_body=XML(problem_body),prob_code=prob_code)
 
+def submit():
+    prob_code=request.vars['prob_code']
+    import os
+    ret_val=os.popen('spoj submit -p '+prob_code).read()
+    return ret_val[ret_val.find("Result"):]
+
 def index():
     """
     example action using the internationalization operator T and flash

@@ -3,6 +3,14 @@ var prev_file="";
 var undo_manager_dict={};
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/c_cpp");
+function submit(){
+
+    $("#submit_status").html("Submitting ...");
+    $.get(submit_url+"?prob_code="+get_par("prob_code"),function(data){
+        $("#submit_status").html(data);
+    });
+}
+
 function change_mode(val){
     editor.getSession().setMode("ace/mode/"+val);
 }
@@ -37,7 +45,6 @@ function save_text(file,text,async_req){
 function save_text_helper(){
     file=$("#file_paths").val();
     save_text(file,editor.getValue(),true);
-    //save_text($.("#file_paths").val(),editor.getValue(),true);
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval

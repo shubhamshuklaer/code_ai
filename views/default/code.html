@@ -11,5 +11,11 @@
 <div class="row">
 <div id="editor"></div>
 </div>
+<div class="row"><input type="button" value="Submit" onclick="submit()"><div id="submit_status"></div></div>
+<script>
+    // =URL does not works only in files which are processed by web2py the
+    //custom.js file is a static file and hence is served as is.
+    var submit_url="{{=URL('submit')}}";
+</script>
 <script src="{{=URL('static','ace/ace.js')}}" type="text/javascript" charset="utf-8"></script>
 <script src="{{=URL('static','js/custom.js')}}" type="text/javascript" charset="utf-8" ></script>
