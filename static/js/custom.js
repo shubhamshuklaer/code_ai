@@ -3,6 +3,13 @@ var prev_file="";
 var undo_manager_dict={};
 editor.setTheme("ace/theme/solarized_light");
 editor.getSession().setMode("ace/mode/c_cpp");
+
+function add_input(){
+    $.get(add_input_url+"?prob_code="+get_par("prob_code"),function(data){
+        update_file_list();
+    });
+}
+
 function submit(){
 
     $("#submit_status").html("Submitting ...");
@@ -67,14 +74,19 @@ function change_text(val){
 }
 
 // http://www.w3schools.com/jquery/ajax_ajax.asp
-$(document).ready(function(){
+$(document).ready(update_file_list);
+
+
+function update_file_list(){
     // jsonp http://stackoverflow.com/a/21948020/2258503
     $.ajax({url: "http://localhost:8008/"+get_par('prob_code'), type: "GET",contentType: "application/json", dataType: "jsonp", success: function(result){
+        $("#file_paths").empty();
         $.each( result, function( i, val ) {
             $("#file_paths").append('<option value='+val+'>'+val+'</option>');
-            undo_manager_dict[val]=new ace.UndoManager();
+            if(!(val in undo_manager_dict))
+                undo_manager_dict[val]=new ace.UndoManager();
         });
         set_text($("#file_paths").val());
         prev_file=$("#file_paths").val();
     }});
-});
+}

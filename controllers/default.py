@@ -26,6 +26,11 @@ def code():
     import re
     return dict(problem_body=XML(problem_body),prob_code=prob_code)
 
+def add_input():
+    prob_code=request.vars['prob_code']
+    import os
+    os.system('spoj add_input -n -p '+prob_code);
+
 def submit():
     prob_code=request.vars['prob_code']
     import os
