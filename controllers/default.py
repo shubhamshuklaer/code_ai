@@ -10,13 +10,18 @@
 
 def code():
     prob_code=request.vars['prob_code']
+    if "no_load_prob" in request.vars:
+        load_prob=False
+    else:
+        load_prob=True
     from bs4 import BeautifulSoup as bs
     import urllib
-    # Enable later
-    #  r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
-    #  soup=bs(r,"lxml")
-    #  problem_body=soup.find(id="problem-body")
-    problem_body="Hello"
+    if load_prob:
+        r = urllib.urlopen('http://spoj.com/problems/'+prob_code).read()
+        soup=bs(r,"lxml")
+        problem_body=soup.find(id="problem-body")
+    else:
+        problem_body="Remove no_load_prob to load problem"
     import os
     import re
     return dict(problem_body=XML(problem_body),prob_code=prob_code)

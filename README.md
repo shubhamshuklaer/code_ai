@@ -7,3 +7,5 @@ be setup. Follow the configuration steps from the link.
 spoj code platform must be set up.
 * Open http://localhost:8000/code_ai/default/code?prob_code=GSS1, where 8000 is
 the port web2py is running on.
+* If you do not want to load problem statement(Internet problems) use
+http://localhost:8000/code_ai/default/code?prob_code=GSS1&no_load_prob.
