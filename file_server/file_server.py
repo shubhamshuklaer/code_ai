@@ -36,9 +36,9 @@ port=8008
 #     elif opt=="-d":
 #         serv_path=os.path.expanduser(arg)
 #
-# if serv_path == None:
-#     usage()
-#     exit(2)
+if serv_path == None:
+    print("spoj root not set, please configure using spoj config --config_all")
+    exit(2)
 
 
 class request_handler(BaseHTTPRequestHandler):
