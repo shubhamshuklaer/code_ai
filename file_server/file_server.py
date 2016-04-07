@@ -13,7 +13,12 @@ from urllib.parse import urlparse
 import mimetypes
 
 # http://stackoverflow.com/questions/3503879/assign-output-of-os-system-to-a-variable-and-prevent-it-from-being-displayed-on
-serv_path=os.path.join(os.popen("spoj get_root").read().strip(),"spoj")
+spoj_root=os.popen("spoj get_root").read().strip()
+if spoj_root is not "":
+    serv_path=os.path.join(os.popen("spoj get_root").read().strip(),"spoj")
+else:
+    print("spoj root not set, please configure using spoj config --config_all")
+    exit(2)
 port=8008
 
 # No need to provide flexibility cause port is hardcoded in the
@@ -36,10 +41,6 @@ port=8008
 #     elif opt=="-d":
 #         serv_path=os.path.expanduser(arg)
 #
-if serv_path == None:
-    print("spoj root not set, please configure using spoj config --config_all")
-    exit(2)
-
 
 class request_handler(BaseHTTPRequestHandler):
     def do_GET(self):
