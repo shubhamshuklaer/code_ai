@@ -1,21 +1,45 @@
 {{extend 'layout.html'}}
-<div class="row">
-{{=problem_body}}
+<div class="container">
+    <div class="row top_buffer">
+    {{=problem_body}}
+    </div>
+    <div class="row top_buffer">
+        <div class="form-group">
+            <label class="control-label col-md-2">File Select</label>
+            <div class="col-md-10">
+                <select id="file_paths" class="form-control" onchange="change_text(this.value)"></select>
+            </div>
+        </div>
+        <div class="form-group top_buffer">
+            <label class="control-label col-md-2">Editor Mode</label>
+            <div class="col-md-10">
+                <select id="mode" onchange="change_mode(this.value)" class="form-control">
+                    {{include 'default/modes.html'}}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row top_buffer">
+    <div id="editor"></div>
+    </div>
+    <div class="row top_buffer">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-default" type="button" onclick="run()">Local Run</button>
+            <input type="text" id="test_case_num" value="0">
+            <!-- http://stackoverflow.com/questions/22678446/how-to-keep-line-breaks-when-using-text-method-for-jquery -->
+            <div id="run_status" style="white-space: pre;"></div>
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-default" type="button" onclick="submit()">Submit</button>
+            <div id="submit_status" style="white-space: pre;"></div>
+        </div>
+    </div>
 </div>
-<div class="row"><select id="file_paths" onchange="change_text(this.value)"></select>
-<div class="row">
-<select id="mode" onchange="change_mode(this.value)">
-    {{include 'default/modes.html'}}
-</select>
-</div>
-<div class="row">
-<div id="editor"></div>
-</div>
-<div class="row"><input type="button" value="Submit" onclick="submit()"><div id="submit_status"></div></div>
 <script>
     // =URL does not works only in files which are processed by web2py the
     //custom.js file is a static file and hence is served as is.
     var submit_url="{{=URL('submit')}}";
+    var run_url="{{=URL('run')}}";
 </script>
 <script src="{{=URL('static','ace/ace.js')}}" type="text/javascript" charset="utf-8"></script>
 <script src="{{=URL('static','js/custom.js')}}" type="text/javascript" charset="utf-8" ></script>

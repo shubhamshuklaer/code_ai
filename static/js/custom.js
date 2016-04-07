@@ -11,6 +11,14 @@ function submit(){
     });
 }
 
+function run(){
+    $("#run_status").html("Running ...");
+    var test_case_num = parseInt($("#test_case_num").val(), 0).toString();
+    $.get(run_url+"?prob_code="+get_par("prob_code")+"&test_case_num="+test_case_num,function(data){
+        $("#run_status").html(data);
+    });
+}
+
 function change_mode(val){
     editor.getSession().setMode("ace/mode/"+val);
 }

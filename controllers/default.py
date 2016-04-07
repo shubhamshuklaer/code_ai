@@ -27,6 +27,12 @@ def submit():
     ret_val=os.popen('spoj submit -p '+prob_code).read()
     return ret_val[ret_val.find("Result"):]
 
+def run():
+    import os
+    prob_code=request.vars['prob_code']
+    test_case_num=request.vars['test_case_num']
+    return os.popen('spoj run '+test_case_num+' -p '+prob_code+' -c').read()
+
 def index():
     """
     example action using the internationalization operator T and flash
