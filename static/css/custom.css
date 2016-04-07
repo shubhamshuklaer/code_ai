@@ -25,3 +25,7 @@
 .top_buffer{
     margin-top:20px;
 }
+
+.remove_padding{
+    padding:0px;
+}

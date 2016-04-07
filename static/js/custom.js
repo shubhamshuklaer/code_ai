@@ -1,7 +1,7 @@
 var editor = ace.edit("editor");
 var prev_file="";
 var undo_manager_dict={};
-editor.setTheme("ace/theme/monokai");
+editor.setTheme("ace/theme/solarized_light");
 editor.getSession().setMode("ace/mode/c_cpp");
 function submit(){
 
