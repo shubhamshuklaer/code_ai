@@ -4,14 +4,19 @@ var undo_manager_dict={};
 editor.setTheme("ace/theme/solarized_light");
 editor.getSession().setMode("ace/mode/c_cpp");
 
+$(window).on('beforeunload', function(){
+    save_text_helper();
+});
+
 function add_input(){
+    save_text_helper();
     $.get(add_input_url+"?prob_code="+get_par("prob_code"),function(data){
         update_file_list();
     });
 }
 
 function submit(){
-
+    save_text_helper();
     $("#submit_status").html("Submitting ...");
     $.get(submit_url+"?prob_code="+get_par("prob_code"),function(data){
         $("#submit_status").html(data);
@@ -19,6 +24,7 @@ function submit(){
 }
 
 function run(){
+    save_text_helper();
     $("#run_status").html("Running ...");
     var test_case_num = parseInt($("#test_case_num").val(), 0).toString();
     $.get(run_url+"?prob_code="+get_par("prob_code")+"&test_case_num="+test_case_num,function(data){
