@@ -18,6 +18,12 @@ def get_run_result(cmd):
         ret_val="Return code: "+str(e.returncode)+"\n"+e.output
     return ret_val
 
+def get_recommended():
+    prob_code=get_run_result("spoj get_recommended")
+    if get_run_result("spoj is_problem_started -p "+prob_code) == "0":
+        redirect(URL('start_problem',vars=dict(prob_code=prob_code)))
+    else:
+        redirect(URL('code',vars=dict(prob_code=prob_code)))
 
 def code():
     import os
