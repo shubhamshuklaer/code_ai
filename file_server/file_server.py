@@ -11,11 +11,22 @@ from http.server import BaseHTTPRequestHandler,HTTPServer
 import socketserver
 from urllib.parse import urlparse
 import mimetypes
+import subprocess,shlex
+
+def get_run_result(cmd):
+    import subprocess,shlex
+    args = shlex.split(cmd)
+    try:
+        ret_val=subprocess.check_output(args,stderr=subprocess.STDOUT)
+    # http://stackoverflow.com/a/8235171/2258503
+    except subprocess.CalledProcessError as e:
+        ret_val="Return code: "+str(e.returncode)+"\n"+e.output
+    return ret_val.decode('utf8').strip()
 
 # http://stackoverflow.com/questions/3503879/assign-output-of-os-system-to-a-variable-and-prevent-it-from-being-displayed-on
-spoj_root=os.popen("spoj get_root").read().strip()
+spoj_root=get_run_result("spoj get_root")
 if spoj_root is not "":
-    serv_path=os.path.join(os.popen("spoj get_root").read().strip(),"spoj")
+    serv_path=os.path.join(spoj_root,"spoj")
 else:
     print("spoj root not set, please configure using spoj config --config_all")
     exit(2)

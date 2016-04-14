@@ -12,11 +12,11 @@ def get_run_result(cmd):
     import subprocess,shlex
     args = shlex.split(cmd)
     try:
-        ret_val=subprocess.check_output(args,stderr=subprocess.STDOUT).decode('utf8').strip()
+        ret_val=subprocess.check_output(args,stderr=subprocess.STDOUT)
     # http://stackoverflow.com/a/8235171/2258503
-    except subprocess.CalledProcessError,e:
+    except subprocess.CalledProcessError as e:
         ret_val="Return code: "+str(e.returncode)+"\n"+e.output
-    return ret_val
+    return ret_val.decode('utf8').strip()
 
 def get_recommended():
     prob_code=get_run_result("spoj get_recommended")
