@@ -1,4 +1,4 @@
-# code_ai
+# code_platform_web
 * Run the web2py web server
 * Import this project into web2py.
 * [spoj code platform](https://github.com/shubhamshuklaer/code_platform/) must
