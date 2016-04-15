@@ -5,7 +5,8 @@
 be setup. Follow the configuration steps from the link.
 * Run the file server in `file_server/file_server.py`. No arguments needed, but
 spoj code platform must be set up.
-* Open http://localhost:8000/code_ai/default/code?prob_code=GSS1, where 8000 is
+* Open http://[host]/[project_name]/default/code?prob_code=GSS1, where 8000 is
 the port web2py is running on.
 * If you do not want to load problem statement(Internet problems) use
-http://localhost:8000/code_ai/default/code?prob_code=GSS1&no_load_prob.
+http://[host]/[project_name]/default/code?prob_code=GSS1&no_load_prob.
+* Here eg of [host] can be localhost:8000 and [project_name]  code_platform_web.
